@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import logo from "../../assets/images/logo.png";
 import styles from "./Sidebar.module.css";
+import { logoutUser } from "../../services/userServices";
 
 function Sidebar({ isOpen: controlledOpen, onToggle, showBurger = true, belowBar = false }) {
   const navigate = useNavigate();
@@ -29,9 +30,8 @@ function Sidebar({ isOpen: controlledOpen, onToggle, showBurger = true, belowBar
     setShowModal(true);
   };
 
-  const confirmLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+  const confirmLogout = async () => {
+    await logoutUser();
     setShowModal(false);
     navigate("/");
   };

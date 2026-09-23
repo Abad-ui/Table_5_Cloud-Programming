@@ -1,18 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { getToken, decodeToken, isTokenValid, getTokenRole, clearAuth } from "../../utils/auth";
+import { getCurrentUser } from "../../services/userServices";
+import { setStoredUser, clearAuth } from "../../utils/auth";
 
 function ProtectedRoute({ children, requireAdmin = false }) {
-  if (!getToken()) {
+  const [status, setStatus] = useState("loading");
+
+  useEffect(() => {
+    let mounted = true;
+
+    getCurrentUser().then((result) => {
+      if (!mounted) return;
+
+      if (!result.success || !result.user) {
+        clearAuth();
+        setStatus("invalid");
+      } else {
+        setStoredUser(result.user);
+        if (requireAdmin && result.user.role !== "admin") {
+          setStatus("forbidden");
+        } else {
+          setStatus("valid");
+        }
+      }
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, [requireAdmin]);
+
+  if (status === "loading") {
+    return null;
+  }
+
+  if (status === "invalid") {
     return <Navigate to="/" replace />;
   }
 
-  if (!isTokenValid()) {
-    clearAuth();
-    return <Navigate to="/" replace />;
-  }
-
-  if (requireAdmin && getTokenRole() !== "admin") {
+  if (status === "forbidden") {
     return <Navigate to="/home" replace />;
   }
 

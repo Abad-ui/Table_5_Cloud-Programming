@@ -1,18 +1,13 @@
-import axios from "axios";
+import apiClient from "./apiClient";
 
 const API_URL = "http://localhost:4000/api/dashboard/";
 
 // ================================
 // Get Dashboard Statistics (users, verified, pending, resolved)
 // ================================
-export const getDashboardStats = async (token) => {
+export const getDashboardStats = async () => {
   try {
-    const response = await axios.get(`${API_URL}stats`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await apiClient.get(`${API_URL}stats`);
     return response.data; // { success, message, stats }
   } catch (error) {
     console.error("Error fetching dashboard stats:", error);
@@ -23,14 +18,9 @@ export const getDashboardStats = async (token) => {
 // ================================
 // Get Report Type Distribution
 // ================================
-export const getReportTypeDistribution = async (token) => {
+export const getReportTypeDistribution = async () => {
   try {
-    const response = await axios.get(`${API_URL}type-distribution`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await apiClient.get(`${API_URL}type-distribution`);
     return response.data; // { success, message, distribution }
   } catch (error) {
     console.error("Error fetching report type distribution:", error);
@@ -41,14 +31,9 @@ export const getReportTypeDistribution = async (token) => {
 // ================================
 // Get Report Trends Over Time
 // ================================
-export const getReportTrends = async (token) => {
+export const getReportTrends = async () => {
   try {
-    const response = await axios.get(`${API_URL}trends`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await apiClient.get(`${API_URL}trends`);
     return response.data; // { success, message, trends }
   } catch (error) {
     console.error("Error fetching report trends:", error);
@@ -59,14 +44,9 @@ export const getReportTrends = async (token) => {
 // ================================
 // Get Most Reported Hazard Subtypes
 // ================================
-export const getMostReportedHazards = async (token) => {
+export const getMostReportedHazards = async () => {
   try {
-    const response = await axios.get(`${API_URL}most-reported`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await apiClient.get(`${API_URL}most-reported`);
     return response.data; // { success, message, mostReported }
   } catch (error) {
     console.error("Error fetching most reported hazards:", error);

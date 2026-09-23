@@ -21,6 +21,7 @@ const {
   getCurrentUser,
   registerUser,
   loginUser,
+  logoutUser,
   verifyAccount,
   resendOTP,
   requestPasswordReset,      // NEW IMPORT
@@ -41,6 +42,9 @@ router.post('/register', authLimiter, registerValidation, registerUser);
 
 // Login a user
 router.post('/login', loginLimiter, loginValidation, loginUser);
+
+// Logout a user (clears the auth cookie)
+router.post('/logout', logoutUser);
 
 // Verify account
 router.post('/verify', otpLimiter, verifyValidation, verifyAccount);

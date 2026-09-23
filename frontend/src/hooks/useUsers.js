@@ -76,8 +76,8 @@ export const useUsers = () => {
   // ================================
   // Logout User
   // ================================
-  const logout = useCallback(() => {
-    logoutUser();
+  const logout = useCallback(async () => {
+    await logoutUser();
     setData(null);
     setError(null);
   }, []);

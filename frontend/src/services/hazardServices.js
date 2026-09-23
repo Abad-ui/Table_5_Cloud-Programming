@@ -1,17 +1,12 @@
-// src/services/hazardService.js
-import axios from "axios";
+// src/services/hazardServices.js
+import apiClient from "./apiClient";
 
 const API_URL = "http://localhost:4000/api/hazards/";
 
-// Get all hazards (requires token)
-export const getAllHazards = async (token) => {
+// Get all hazards (requires session cookie)
+export const getAllHazards = async () => {
   try {
-    const response = await axios.get(API_URL, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await apiClient.get(API_URL);
     return response.data; // { success, message, hazards }
   } catch (error) {
     console.error("Error fetching hazards:", error);
@@ -20,19 +15,13 @@ export const getAllHazards = async (token) => {
 };
 
 // Update hazard's fixed status
-export const updateHazardFixedStatus = async (hazardId, newStatus, token) => {
+export const updateHazardFixedStatus = async (hazardId, newStatus) => {
   try {
-    const response = await axios.patch(
+    const response = await apiClient.patch(
       `${API_URL}status/${hazardId}`,
-      { fixedStatus: newStatus },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
+      { fixedStatus: newStatus }
     );
-    return response.data; 
+    return response.data;
   } catch (error) {
     console.error("Error updating hazard fixed status:", error);
     return { success: false, message: "Failed to update hazard fixed status." };
@@ -43,34 +32,12 @@ export const updateHazardFixedStatus = async (hazardId, newStatus, token) => {
 // Get Hazards for Map Display
 // Endpoint: api_url/map
 // ================================
-export const getHazardsForMap = async (token) => {
+export const getHazardsForMap = async () => {
   try {
-    const response = await axios.get(`${API_URL}map`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await apiClient.get(`${API_URL}map`);
     return response.data; // { success, message, hazards }
   } catch (error) {
     console.error("Error fetching hazards for map:", error);
     return { success: false, message: "Failed to retrieve hazards for map." };
   }
 };
-
-
-//
-/*export const createHazard = async (hazardData, token) => {
-  try {
-    const response = await axios.post(API_URL, hazardData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-    return response.data; // { success, message, hazard }
-  } catch (error) {
-    console.error("Error creating hazard:", error);
-    return { success: false, message: "Failed to create hazard." };
-  }
-};*/

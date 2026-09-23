@@ -29,13 +29,6 @@ export const useDashboard = () => {
       setLoading(true);
       setError("");
 
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setError("Please log in to view dashboard stats");
-        setLoading(false);
-        return;
-      }
-
       // Fetch all dashboard data in parallel
       const [
         statsResponse,
@@ -43,10 +36,10 @@ export const useDashboard = () => {
         trendsResponse,
         mostReportedResponse,
       ] = await Promise.all([
-        getDashboardStats(token),
-        getReportTypeDistribution(token),
-        getReportTrends(token),
-        getMostReportedHazards(token),
+        getDashboardStats(),
+        getReportTypeDistribution(),
+        getReportTrends(),
+        getMostReportedHazards(),
       ]);
 
       if (statsResponse.success && statsResponse.stats) {

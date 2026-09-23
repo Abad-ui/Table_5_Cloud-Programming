@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import logo from "../assets/images/logo.png";
 import { useUsers } from "../hooks/useUsers";
-import { getToken, decodeToken, isTokenValid, clearAuth } from "../utils/auth";
+import { getCurrentUser } from "../services/userServices";
+import { setStoredUser, clearAuth } from "../utils/auth";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -13,18 +14,24 @@ function Login() {
 
   const { login, loading, error, clearError } = useUsers();
 
-  // If a valid token is already stored, skip the login form (handles back/refresh)
+  // If a valid session cookie exists, skip the login form (handles back/refresh)
   useEffect(() => {
-    if (!getToken()) return;
+    let mounted = true;
 
-    if (!isTokenValid()) {
-      clearAuth();
-      return;
-    }
+    getCurrentUser().then((result) => {
+      if (!mounted) return;
 
-    const payload = decodeToken(getToken());
-    const role = payload?.role;
-    navigate(role === "admin" ? "/admin-dashboard" : "/home", { replace: true });
+      if (result.success && result.user) {
+        setStoredUser(result.user);
+        navigate(result.user.role === "admin" ? "/admin-dashboard" : "/home", { replace: true });
+      } else {
+        clearAuth();
+      }
+    });
+
+    return () => {
+      mounted = false;
+    };
   }, [navigate]);
 
   const handleSubmit = async (e) => {
@@ -32,7 +39,7 @@ function Login() {
     const result = await login(email, password);
 
     if (result?.success) {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(sessionStorage.getItem("user"));
       if (user.role === "admin") {
         navigate("/admin-dashboard");
       } else {

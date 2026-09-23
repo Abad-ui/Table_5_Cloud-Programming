@@ -4,6 +4,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 // ==============================================
 // Routes & Middleware Imports
@@ -29,8 +30,9 @@ const app = express();
 // ==============================================
 // Global Middleware
 // ==============================================
-app.use(cors());
+app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000', credentials: true }));
 app.use(express.json());
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(logger);
 

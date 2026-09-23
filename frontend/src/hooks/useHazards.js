@@ -18,15 +18,8 @@ export const useHazards = (limit = null) => {
     try {
       setLoading(true);
       setError('');
-      const token = localStorage.getItem("token");
 
-      if (!token) {
-        setError("Please log in to view hazards");
-        setLoading(false);
-        return;
-      }
-
-      const response = await getAllHazards(token);
+      const response = await getAllHazards();
 
       if (response.success && response.hazards) {
         // Sort by date (newest first) and apply limit
@@ -49,15 +42,8 @@ export const useHazards = (limit = null) => {
   const fetchHazardsForMap = async () => {
     try {
       setMapLoading(true);
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setError("Please log in to view map hazards");
-        setMapHazards([]);
-        setMapLoading(false);
-        return;
-      }
 
-      const response = await getHazardsForMap(token);
+      const response = await getHazardsForMap();
 
       if (response.success && response.hazards) {
         setMapHazards(response.hazards);
@@ -77,14 +63,7 @@ export const useHazards = (limit = null) => {
   // Function to update fixedStatus of a hazard
   const updateFixedStatus = async (hazardId, newStatus) => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        const msg = "Please log in to update hazard status";
-        setError(msg);
-        return { success: false, message: msg };
-      }
-
-      const response = await updateHazardFixedStatus(hazardId, newStatus, token);
+      const response = await updateHazardFixedStatus(hazardId, newStatus);
 
       if (response.success && response.hazard) {
         // Update local state

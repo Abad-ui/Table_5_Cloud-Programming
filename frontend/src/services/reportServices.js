@@ -1,20 +1,14 @@
-import axios from "axios";
+import apiClient from "./apiClient";
 
 const API_URL = "http://localhost:4000/api/reports/";
-
 
 // ----------------------
 // Get reports for map display
 // Shows reports not fixed or fixed within the last 24 hours
 // ----------------------
-export const getReportsForMap = async (token) => {
+export const getReportsForMap = async () => {
   try {
-    const response = await axios.get(`${API_URL}map`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await apiClient.get(`${API_URL}map`);
     return response.data; // { success, message, reports }
   } catch (error) {
     console.error("Error fetching reports for map:", error);
@@ -25,18 +19,12 @@ export const getReportsForMap = async (token) => {
   }
 };
 
-
 // ----------------------
 // Get all reports
 // ----------------------
-export const getAllReports = async (token) => {
+export const getAllReports = async () => {
   try {
-    const response = await axios.get(API_URL, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await apiClient.get(API_URL);
     return response.data;
   } catch (error) {
     console.error("Error fetching reports:", error);
@@ -47,14 +35,9 @@ export const getAllReports = async (token) => {
 // ----------------------
 // Get reports by user ID
 // ----------------------
-export const getReportByUserId = async (userId, token) => {
+export const getReportByUserId = async (userId) => {
   try {
-    const response = await axios.get(`${API_URL}user/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await apiClient.get(`${API_URL}user/${userId}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching user reports:", error);
@@ -65,11 +48,9 @@ export const getReportByUserId = async (userId, token) => {
 // ----------------------
 // Get user report count
 // ----------------------
-export const getUserReportCount = async (userId, token) => {
+export const getUserReportCount = async (userId) => {
   try {
-    const response = await axios.get(`${API_URL}user/count/${userId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await apiClient.get(`${API_URL}user/count/${userId}`);
     return response.data;
   } catch (err) {
     return {
@@ -83,10 +64,8 @@ export const getUserReportCount = async (userId, token) => {
 // ----------------------
 // Create or Merge Report
 // ----------------------
-export const createReport = async (reportData, token) => {
+export const createReport = async (reportData) => {
   try {
-    console.log("📤 Sending report data:", reportData);
-
     const formData = new FormData();
 
     // Append basic fields
@@ -106,26 +85,12 @@ export const createReport = async (reportData, token) => {
       formData.append("photo", reportData.photo);
     }
 
-    // Debug log to verify FormData content
-    for (let [key, value] of formData.entries()) {
-      console.log(`🧾 FormData -> ${key}:`, value);
-    }
-
     // Send POST request (handles both new + merged reports)
-    const response = await axios.post(API_URL, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await apiClient.post(API_URL, formData);
 
-    console.log("✅ Report API response:", response.data);
     return response.data; // { success, message, report }
-
   } catch (error) {
-    console.error("❌ Error creating/merging report:", error);
-    console.error("Server Response:", error.response?.data);
-
+    console.error("Error creating/merging report:", error);
     return {
       success: false,
       message:
@@ -138,18 +103,9 @@ export const createReport = async (reportData, token) => {
 // ----------------------
 // Verify Report (Admin)
 // ----------------------
-export const verifyReport = async (reportId, token) => {
+export const verifyReport = async (reportId) => {
   try {
-    const response = await axios.patch(
-      `${API_URL}verify/${reportId}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await apiClient.patch(`${API_URL}verify/${reportId}`);
     return response.data;
   } catch (error) {
     console.error("Error verifying report:", error);
@@ -160,18 +116,9 @@ export const verifyReport = async (reportId, token) => {
 // ----------------------
 // Reject Report (Admin)
 // ----------------------
-export const rejectReport = async (reportId, token) => {
+export const rejectReport = async (reportId) => {
   try {
-    const response = await axios.patch(
-      `${API_URL}reject/${reportId}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await apiClient.patch(`${API_URL}reject/${reportId}`);
     return response.data;
   } catch (error) {
     console.error("Error rejecting report:", error);
@@ -182,18 +129,9 @@ export const rejectReport = async (reportId, token) => {
 // ----------------------
 // Update Report
 // ----------------------
-export const updateReport = async (reportId, updateData, token) => {
+export const updateReport = async (reportId, updateData) => {
   try {
-    const response = await axios.patch(
-      `${API_URL}update/${reportId}`,
-      updateData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await apiClient.patch(`${API_URL}update/${reportId}`, updateData);
     return response.data;
   } catch (error) {
     console.error("Error updating report:", error);
@@ -207,17 +145,9 @@ export const updateReport = async (reportId, updateData, token) => {
 // ----------------------
 // Delete Report (Soft Delete)
 // ----------------------
-export const deleteReport = async (reportId, token) => {
+export const deleteReport = async (reportId) => {
   try {
-    const response = await axios.delete(
-      `${API_URL}delete/${reportId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await apiClient.delete(`${API_URL}delete/${reportId}`);
     return response.data;
   } catch (error) {
     console.error("Error deleting report:", error);

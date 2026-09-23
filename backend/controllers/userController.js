@@ -18,6 +18,31 @@ const createToken = (user) => {
 };
 
 // ================================
+// Helper: HttpOnly cookie settings
+// (keeps the JWT out of JavaScript's reach - XSS-safe)
+// ================================
+const AUTH_COOKIE_MAX_AGE = 24 * 60 * 60 * 1000; // 1 day, matches token expiry
+
+const getAuthCookieOptions = () => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax',
+  maxAge: AUTH_COOKIE_MAX_AGE,
+});
+
+const setAuthCookie = (res, token) => {
+  res.cookie('token', token, getAuthCookieOptions());
+};
+
+const clearAuthCookie = (res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+  });
+};
+
+// ================================
 // Validation Functions
 // ================================
 const validateEmail = (email) => {
@@ -273,16 +298,26 @@ const loginUser = async (req, res) => {
 
     const token = createToken(user);
 
+    // Store the JWT in an HttpOnly cookie (not exposed to JavaScript)
+    setAuthCookie(res, token);
+
     return sendResponse(res, 200, true, 'User logged in successfully.', 'user', {
       id: user._id,
       username: user.username,
       email: user.email,
       role: user.role,
-      token,
     });
   } catch (err) {
     return sendResponse(res, 400, false, 'Login failed.', 'error', err.message);
   }
+};
+
+// ================================
+// Logout User (clears the auth cookie)
+// ================================
+const logoutUser = async (req, res) => {
+  clearAuthCookie(res);
+  return sendResponse(res, 200, true, 'Logged out successfully.');
 };
 
 // ================================
@@ -494,6 +529,7 @@ module.exports = {
   getCurrentUser,
   registerUser,
   loginUser,
+  logoutUser,
   verifyAccount,
   resendOTP,
   requestPasswordReset,

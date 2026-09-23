@@ -10,14 +10,17 @@ const User = require('../models/userModel');
 // Authentication Middleware
 // ================================
 const requireAuth = async (req, res, next) => {
-  const { authorization } = req.headers;
+  // Read token from the HttpOnly cookie first, fall back to the Authorization header
+  let token = null;
+  if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
+  } else if (req.headers.authorization) {
+    token = req.headers.authorization.split(' ')[1];
+  }
 
-  // Check if the authorization header is missing
-  if (!authorization)
+  // Check if the token is missing
+  if (!token)
     return res.status(401).json({ error: 'Authorization token required' });
-
-  // Extract the token from the header
-  const token = authorization.split(' ')[1];
 
   try {
     // Verify and decode the JWT

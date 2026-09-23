@@ -1,22 +1,14 @@
 // src/services/analysisServices.js
-import axios from "axios";
+import apiClient from "./apiClient";
 
 const API_URL = "http://localhost:4000/api/analysis";
-
-// Get auth header with token
-const getAuthHeader = () => {
-  const token = localStorage.getItem("token");
-  return {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-};
 
 // ================================
 // Get Basic Analysis Data (No AI)
 // ================================
 export const getAnalysisData = async () => {
   try {
-    const response = await axios.get(`${API_URL}/data`, getAuthHeader());
+    const response = await apiClient.get(`${API_URL}/data`);
     return response.data;
   } catch (error) {
     return {
@@ -31,7 +23,7 @@ export const getAnalysisData = async () => {
 // ================================
 export const getAIAnalysis = async () => {
   try {
-    const response = await axios.post(`${API_URL}/ai-analysis`, {}, getAuthHeader());
+    const response = await apiClient.post(`${API_URL}/ai-analysis`);
     return response.data;
   } catch (error) {
     return {
@@ -46,8 +38,7 @@ export const getAIAnalysis = async () => {
 // ================================
 export const generateAnalysisPDF = async () => {
   try {
-    const response = await axios.get(`${API_URL}/pdf`, {
-      ...getAuthHeader(),
+    const response = await apiClient.get(`${API_URL}/pdf`, {
       responseType: 'blob' // Important for file download
     });
 
@@ -79,8 +70,7 @@ export const generateAnalysisPDF = async () => {
 // ================================
 export const generatePDFFromSaved = async (analysisId) => {
   try {
-    const response = await axios.get(`${API_URL}/saved/${analysisId}/pdf`, {
-      ...getAuthHeader(),
+    const response = await apiClient.get(`${API_URL}/saved/${analysisId}/pdf`, {
       responseType: 'blob'
     });
 
@@ -113,16 +103,15 @@ export const generatePDFFromSaved = async (analysisId) => {
 export const getSavedAnalyses = async (params = {}) => {
   try {
     const { limit = 10, page = 1, analysisType, riskLevel, sortBy, sortOrder } = params;
-    
-    const response = await axios.get(`${API_URL}/saved`, {
-      ...getAuthHeader(),
-      params: { 
-        limit, 
-        page, 
-        analysisType, 
-        riskLevel, 
-        sortBy, 
-        sortOrder 
+
+    const response = await apiClient.get(`${API_URL}/saved`, {
+      params: {
+        limit,
+        page,
+        analysisType,
+        riskLevel,
+        sortBy,
+        sortOrder
       }
     });
     return response.data;
@@ -139,7 +128,7 @@ export const getSavedAnalyses = async (params = {}) => {
 // ================================
 export const getAnalysisById = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/saved/${id}`, getAuthHeader());
+    const response = await apiClient.get(`${API_URL}/saved/${id}`);
     return response.data;
   } catch (error) {
     return {
@@ -154,7 +143,7 @@ export const getAnalysisById = async (id) => {
 // ================================
 export const getFullAnalysis = async () => {
   try {
-    const response = await axios.post(`${API_URL}/analyze`, {}, getAuthHeader());
+    const response = await apiClient.post(`${API_URL}/analyze`);
     return response.data;
   } catch (error) {
     return {
@@ -169,7 +158,7 @@ export const getFullAnalysis = async () => {
 // ================================
 export const deleteAnalysis = async (id) => {
   try {
-    const response = await axios.delete(`${API_URL}/saved/${id}`, getAuthHeader());
+    const response = await apiClient.delete(`${API_URL}/saved/${id}`);
     return response.data;
   } catch (error) {
     return {

@@ -18,25 +18,16 @@ export const useReports = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const getToken = useCallback(() => localStorage.getItem('token'), []);
-
   // ==============================
   // Fetch reports for map
   // ==============================
   const fetchReportsForMap = useCallback(async () => {
     setLoading(true);
     setError(null);
-    const token = getToken();
-
-    if (!token) {
-      setError('No authentication token found');
-      setLoading(false);
-      return;
-    }
 
     try {
-      const reportsResult = await getReportsForMap(token);
-      const hazardsResult = await getAllHazards(token);
+      const reportsResult = await getReportsForMap();
+      const hazardsResult = await getAllHazards();
 
       if (reportsResult.success && hazardsResult.success) {
         // Map hazardId by reportId
@@ -55,12 +46,12 @@ export const useReports = () => {
         setError('Failed to fetch reports or hazards for map');
       }
     } catch (err) {
-      console.error('❌ Error in fetchReportsForMap:', err);
+      console.error('Error in fetchReportsForMap:', err);
       setError('An error occurred while fetching reports for map');
     } finally {
       setLoading(false);
     }
-  }, [getToken]);
+  }, []);
 
 
   // ==============================
@@ -69,17 +60,10 @@ export const useReports = () => {
   const fetchAllReports = useCallback(async () => {
   setLoading(true);
   setError(null);
-  const token = getToken();
-
-  if (!token) {
-    setError('No authentication token found');
-    setLoading(false);
-    return;
-  }
 
   try {
-    const reportsResult = await getAllReports(token);
-    const hazardsResult = await getAllHazards(token);
+    const reportsResult = await getAllReports();
+    const hazardsResult = await getAllHazards();
 
     if (reportsResult.success && hazardsResult.success) {
       // Build a map of hazard IDs by reportId._id
@@ -124,12 +108,12 @@ export const useReports = () => {
       setError('Failed to fetch reports or hazards');
     }
   } catch (err) {
-    console.error('❌ Error in fetchAllReports:', err);
+    console.error('Error in fetchAllReports:', err);
     setError('An error occurred while fetching reports');
   } finally {
     setLoading(false);
   }
-}, [getToken]);
+}, []);
 
 
   // ==============================
@@ -138,21 +122,14 @@ export const useReports = () => {
   const addReport = async (reportData) => {
     setLoading(true);
     setError(null);
-    const token = getToken();
-
-    if (!token) {
-      setError('No authentication token found');
-      setLoading(false);
-      return { success: false, message: 'No authentication token found' };
-    }
 
     try {
-      const result = await createReport(reportData, token);
+      const result = await createReport(reportData);
 
       if (result.success) {
         // If the backend merged with an existing report
         if (result.message?.includes('merged')) {
-          console.log('🔁 Report merged — updating existing report in state');
+          console.log('Report merged - updating existing report in state');
 
           setReports(prev =>
             prev.map(r =>
@@ -160,8 +137,8 @@ export const useReports = () => {
             )
           );
         } else {
-          // New report created — prepend it
-          console.log('🆕 New report created — adding to state');
+          // New report created - prepend it
+          console.log('New report created - adding to state');
           setReports(prev => [result.report, ...prev]);
         }
 
@@ -172,7 +149,7 @@ export const useReports = () => {
       }
     } catch (err) {
       const errorMsg = 'An error occurred while creating or merging report';
-      console.error('❌ Error in addReport:', err);
+      console.error('Error in addReport:', err);
       setError(errorMsg);
       return { success: false, message: errorMsg };
     } finally {
@@ -186,16 +163,9 @@ export const useReports = () => {
   const fetchUserReports = useCallback(async (userId) => {
     setLoading(true);
     setError(null);
-    const token = getToken();
-
-    if (!token) {
-      setError('No authentication token found');
-      setLoading(false);
-      return { success: false, message: 'No authentication token found' };
-    }
 
     try {
-      const result = await getReportByUserId(userId, token);
+      const result = await getReportByUserId(userId);
 
       if (result.success) {
         setReports(result.reports || []);
@@ -205,13 +175,13 @@ export const useReports = () => {
         return { success: false, message: result.message };
       }
     } catch (err) {
-      console.error('❌ Error in fetchUserReports:', err);
+      console.error('Error in fetchUserReports:', err);
       setError('An error occurred while fetching user reports');
       return { success: false, message: 'An error occurred while fetching user reports' };
     } finally {
       setLoading(false);
     }
-  }, [getToken]);
+  }, []);
 
   // ==============================
   // Get user report count
@@ -219,26 +189,19 @@ export const useReports = () => {
   const fetchUserReportCount = useCallback(async (userId) => {
     setLoading(true);
     setError(null);
-    const token = getToken();
-
-    if (!token) {
-      setError('No authentication token found');
-      setLoading(false);
-      return { success: false, message: 'No authentication token found' };
-    }
 
     try {
-      const result = await getUserReportCount(userId, token);
+      const result = await getUserReportCount(userId);
       return result.success
         ? { success: true, count: result.reportCount }
         : { success: false, message: result.message };
     } catch (err) {
-      console.error('❌ Error in fetchUserReportCount:', err);
+      console.error('Error in fetchUserReportCount:', err);
       return { success: false, message: 'Failed to fetch report count' };
     } finally {
       setLoading(false);
     }
-  }, [getToken]);
+  }, []);
 
   // ==============================
   // Verify Report (Admin)
@@ -246,10 +209,9 @@ export const useReports = () => {
   const verifyUserReport = async (reportId) => {
     setLoading(true);
     setError(null);
-    const token = getToken();
 
     try {
-      const result = await verifyReport(reportId, token);
+      const result = await verifyReport(reportId);
       if (result.success) {
         setReports(prev =>
           prev.map(report =>
@@ -261,7 +223,7 @@ export const useReports = () => {
       }
       return result;
     } catch (err) {
-      console.error('❌ Error verifying report:', err);
+      console.error('Error verifying report:', err);
       return { success: false, message: 'Failed to verify report' };
     } finally {
       setLoading(false);
@@ -274,10 +236,9 @@ export const useReports = () => {
   const rejectUserReport = async (reportId) => {
     setLoading(true);
     setError(null);
-    const token = getToken();
 
     try {
-      const result = await rejectReport(reportId, token);
+      const result = await rejectReport(reportId);
       if (result.success) {
         setReports(prev =>
           prev.map(report =>
@@ -289,7 +250,7 @@ export const useReports = () => {
       }
       return result;
     } catch (err) {
-      console.error('❌ Error rejecting report:', err);
+      console.error('Error rejecting report:', err);
       return { success: false, message: 'Failed to reject report' };
     } finally {
       setLoading(false);
@@ -302,16 +263,9 @@ export const useReports = () => {
   const updateUserReport = async (reportId, updateData) => {
     setLoading(true);
     setError(null);
-    const token = getToken();
-
-    if (!token) {
-      setError('No authentication token found');
-      setLoading(false);
-      return { success: false, message: 'No authentication token found' };
-    }
 
     try {
-      const result = await updateReport(reportId, updateData, token);
+      const result = await updateReport(reportId, updateData);
 
       if (result.success) {
         // Update the report in state
@@ -329,7 +283,7 @@ export const useReports = () => {
       }
     } catch (err) {
       const errorMsg = 'An error occurred while updating the report';
-      console.error('❌ Error in updateUserReport:', err);
+      console.error('Error in updateUserReport:', err);
       setError(errorMsg);
       return { success: false, message: errorMsg };
     } finally {
@@ -343,16 +297,9 @@ export const useReports = () => {
   const deleteUserReport = async (reportId) => {
     setLoading(true);
     setError(null);
-    const token = getToken();
-
-    if (!token) {
-      setError('No authentication token found');
-      setLoading(false);
-      return { success: false, message: 'No authentication token found' };
-    }
 
     try {
-      const result = await deleteReport(reportId, token);
+      const result = await deleteReport(reportId);
 
       if (result.success) {
         // Remove the report from state (or mark as deleted)
@@ -366,7 +313,7 @@ export const useReports = () => {
       }
     } catch (err) {
       const errorMsg = 'An error occurred while deleting the report';
-      console.error('❌ Error in deleteUserReport:', err);
+      console.error('Error in deleteUserReport:', err);
       setError(errorMsg);
       return { success: false, message: errorMsg };
     } finally {

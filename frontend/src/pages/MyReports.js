@@ -27,9 +27,9 @@ function MyReports() {
   });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
 
-  // Get current user ID from localStorage
+  // Get current user ID from sessionStorage
   const getCurrentUserId = () => {
-    const userData = localStorage.getItem('user');
+    const userData = sessionStorage.getItem('user');
     if (userData) {
       try {
         const user = JSON.parse(userData);
