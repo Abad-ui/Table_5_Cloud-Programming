@@ -1,0 +1,232 @@
+.adminSidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #1F2937;
+  color: #E5E7EB;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  overflow-y: auto;
+  border-right: 2px solid #374151;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.adminSidebar nav {
+  flex: 1;
+}
+
+/* Admin Header Styles */
+.adminSidebarHeader {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.1);
+}
+
+.adminSidebarLogo {
+  width: 45px;
+  height: 45px;
+  margin-right: 12px;
+}
+
+.adminHeaderText {
+  display: flex;
+  flex-direction: column;
+}
+
+.adminSidebarTitle {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #E5E7EB;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.adminBadge {
+  background: linear-gradient(135deg, #f0a544, #e67e22);
+  color: #1F2937;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-top: 4px;
+  align-self: flex-start;
+}
+
+.adminSidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 -20px;
+}
+
+.adminSidebar li {
+  margin-bottom: 8px;
+  border-radius: 0;
+  transition: all 0.2s ease;
+}
+
+.adminSidebar li.active {
+  background-color: #f0a544;
+}
+
+.adminSidebar li.active .adminSidebarLink {
+  color: #1F2937;
+  font-weight: bold;
+}
+
+.adminSidebar li:hover {
+  background-color: #f0a544;
+}
+
+.adminSidebar li:hover .adminSidebarLink {
+  color: #1F2937;
+}
+
+/* Admin Link Styles */
+.adminSidebarLink {
+  display: block;
+  padding: 14px 35px;
+  color: #E5E7EB;
+  text-decoration: none;
+  border-radius: 0;
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+/* Active link styling */
+.adminSidebar li.active .adminSidebarLink {
+  background-color: #f0a544;
+  color: #1F2937;
+  font-weight: bold;
+}
+
+/* Hover link styling */
+.adminSidebarLink:hover {
+  background-color: #f0a544;
+  color: #1F2937;
+}
+
+/* Logout specific styles */
+.adminLogoutContainer {
+  margin: 0 -20px;
+  border-top: 1px solid rgba(229, 231, 235, 0.1);
+  padding-top: 10px;
+}
+
+.adminLogoutBtn {
+  color: #E5E7EB;
+}
+
+.adminLogoutBtn:hover {
+  color: #1F2937;
+}
+
+/* Optional: Add icons support for future enhancement */
+.adminNavIcon {
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+}
+
+/* ====== Burger Toggle (mobile only) ====== */
+.burger {
+  display: none;
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 1101;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1F2937 0%, #374151 100%);
+  color: #E5E7EB;
+  border: 1px solid #4B5563;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s ease;
+}
+
+.burger:hover {
+  background: #f0a544;
+}
+
+.burger:focus {
+  outline: none;
+}
+
+.burgerIcon {
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Backdrop overlay when drawer is open */
+.backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1090;
+}
+
+/* Responsive Design - Off-canvas drawer on mobile */
+@media (max-width: 768px) {
+  .burger {
+    display: flex;
+  }
+
+  .adminSidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    z-index: 1100;
+    transform: translateX(-105%);
+    transition: transform 0.3s ease;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .adminSidebar.adminSidebarOpen {
+    transform: translateX(0);
+  }
+
+  /* When a top bar exists, slide the drawer below it so the bar doesn't cover the header */
+  .adminSidebar.adminSidebarBelowBar {
+    top: 56px;
+    height: calc(100vh - 56px);
+  }
+
+  .adminSidebar.adminSidebarBelowBar.adminSidebarOpen {
+    transform: translateX(0);
+  }
+}
+
+/* Landscape phones - short viewport */
+@media (max-height: 500px) and (orientation: landscape) {
+  .adminSidebar.adminSidebarBelowBar {
+    top: 48px;
+    height: calc(100vh - 48px);
+  }
+}

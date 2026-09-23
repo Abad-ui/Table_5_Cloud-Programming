@@ -1,0 +1,257 @@
+/* ===== Import Modern Fonts ===== */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap");
+
+/* ====== Page Layout ====== */
+.registerPage {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f79619 0%, #33abcc 100%);
+  font-family: "Poppins", sans-serif;
+}
+
+/* ====== Container ====== */
+.registerContainer {
+  background: #ffffff;
+  padding: 60px 60px 50px;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  width: 480px;
+  text-align: center;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* ====== Header (Logo + Title) ====== */
+.registerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.logo {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.registerHeader h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 30px;
+  color: #222;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ====== Section Title ====== */
+.sectionTitle {
+  text-align: left;
+  font-size: 22px;
+  font-weight: 600;
+  color: #f79619;
+  margin-bottom: 15px;
+  font-family: "Inter", sans-serif;
+}
+
+/* ====== Form ====== */
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.registerForm label {
+  text-align: left;
+  font-weight: 600;
+  color: #444;
+  font-size: 14px;
+}
+
+.registerForm input {
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.registerForm input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* ====== Password Input Wrapper ====== */
+.passwordInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordInputWrapper input {
+  padding-right: 45px;
+  width: 100%;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: #666;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.passwordToggleIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.passwordToggleIcon svg {
+  width: 20px;
+  height: 20px;
+  color: #666;
+  transition: color 0.2s ease;
+}
+
+.passwordToggle:hover .passwordToggleIcon svg {
+  color: #007bff;
+}
+
+/* Remove all focus and active states */
+.passwordToggle,
+.passwordToggle:focus,
+.passwordToggle:focus-visible,
+.passwordToggle:active,
+.passwordToggle:active:focus,
+.passwordToggle:focus:not(:focus-visible),
+.passwordToggle:-moz-focusring,
+.passwordToggle::-moz-focus-inner,
+.passwordToggle::-moz-focus-outer,
+button.passwordToggle,
+button[type="button"].passwordToggle,
+button.passwordToggle:focus,
+button[type="button"].passwordToggle:focus,
+button.passwordToggle:focus-visible,
+button[type="button"].passwordToggle:focus-visible,
+.passwordToggle *,
+.passwordToggle:focus *,
+.passwordToggle:active *,
+button.passwordToggle * {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  background: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* ====== Button ====== */
+.registerForm button {
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.registerForm button:hover {
+  background: linear-gradient(135deg, #0056b3, #00408a);
+  transform: translateY(-2px);
+}
+
+/* ====== Login Link ====== */
+.loginLink {
+  margin-top: 25px;
+  font-size: 15px;
+  color: #555;
+  font-family: "Poppins", sans-serif;
+}
+
+.loginLink a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.loginLink a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* ====== Error Message ====== */
+.errorMessage {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* ====== Animation ====== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ====== Responsive Design ====== */
+@media (max-width: 768px) {
+  .registerContainer {
+    width: 90%;
+    max-width: 480px;
+    padding: 50px 40px 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .registerContainer {
+    width: 92%;
+    padding: 36px 22px 28px;
+    border-radius: 16px;
+  }
+
+  .logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .registerHeader h1 {
+    font-size: 24px;
+  }
+
+  .sectionTitle {
+    font-size: 20px;
+  }
+
+  .registerForm {
+    gap: 16px;
+  }
+}

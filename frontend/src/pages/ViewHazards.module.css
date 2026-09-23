@@ -1,0 +1,623 @@
+/* Reset default margins/paddings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Entire page */
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Body contains sidebar + main content */
+.bodyContainer {
+  display: flex;
+  flex: 1;
+  height: 100vh;
+}
+
+/* Main content area */
+.pageContent {
+  flex: 1;
+  margin-left: 250px; /* Account for sidebar */
+  background-color: #f2f2f2;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Mobile top bar: burger | title | filter */
+.mobileTopBar {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  z-index: 1101;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 12px;
+  background: linear-gradient(135deg, #1F2937 0%, #374151 100%);
+  border-bottom: 1px solid #4B5563;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.mobileBurgerBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #E5E7EB;
+  border: 1px solid #4B5563;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.mobileBurgerBtn:hover {
+  background: #3B82F6;
+}
+
+.mobileTopBarTitle {
+  flex: 1;
+  margin: 0;
+  color: #E5E7EB;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobileFilterBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(59, 130, 246, 0.2);
+  color: #60A5FA;
+  border: 1px solid #3B82F6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.mobileFilterBtn:hover {
+  background: #3B82F6;
+  color: white;
+}
+
+.mobileFilterBtnActive {
+  background: #3B82F6;
+  color: white;
+}
+
+/* Map container - takes full space */
+.mapContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  background: #e0e0e0; /* Fallback color */
+}
+
+/* Map card styling */
+.mapCard {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.mapCard h3 {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(31, 41, 55, 0.95);
+  color: #E5E7EB;
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Increased z-index to be above everything */
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-left: 4px solid #3B82F6;
+  /* Ensure it stays visible */
+  pointer-events: none; /* Prevents it from interfering with map interactions */
+}
+
+.mapPlaceholder {
+  width: 100%;
+  height: 100%;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Search Box - positioned as small box at top right */
+.searchBox {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 380px;
+  max-height: 80vh;
+  background: linear-gradient(135deg, #1F2937 0%, #374151 100%);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #4B5563;
+  backdrop-filter: blur(10px);
+}
+
+/* Search header with toggle button */
+.searchHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #4B5563;
+  background: linear-gradient(135deg, #374151 0%, #1F2937 100%);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.searchHeader::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3B82F6, #10B981, #EF4444);
+  border-radius: 12px 12px 0 0;
+}
+
+.searchHeader h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #E5E7EB;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.searchHeader h3::before {
+  content: '🔍';
+  font-size: 1.1em;
+}
+
+.toggleFiltersBtn {
+  background: rgba(59, 130, 246, 0.9);
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.toggleFiltersBtn:hover {
+  background: #3B82F6;
+  transform: scale(1.1);
+}
+
+/* Search content */
+.searchContent {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  background: rgba(31, 41, 55, 0.95);
+}
+
+/* Search input group */
+.searchInputGroup {
+  margin-bottom: 15px;
+}
+
+.searchInput {
+  padding: 12px 14px;
+  border: 2px solid #4B5563;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(55, 65, 81, 0.8);
+  color: #E5E7EB;
+  font-family: inherit;
+  margin-bottom: 10px;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  background: rgba(55, 65, 81, 1);
+}
+
+.searchInput::placeholder {
+  color: #9CA3AF;
+}
+
+.resultsCount {
+  text-align: center;
+  color: #9CA3AF;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: rgba(55, 65, 81, 0.5);
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #4B5563;
+}
+
+/* Filters content */
+.filtersContent {
+  border-top: 1px solid #4B5563;
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterLabel {
+  font-weight: 600;
+  color: #E5E7EB;
+  font-size: 0.9rem;
+}
+
+.selectAllBtn {
+  background: rgba(59, 130, 246, 0.8);
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.selectAllBtn:hover {
+  background: #3B82F6;
+  transform: translateY(-1px);
+}
+
+/* Checkbox Groups */
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 120px;
+}
+
+.checkboxGroup.scrollable {
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #E5E7EB;
+  transition: color 0.2s;
+  padding: 4px 0;
+}
+
+.checkboxLabel:hover {
+  color: #FFFFFF;
+}
+
+.checkboxInput {
+  display: none;
+}
+
+.checkmark {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #6B7280;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  background: rgba(55, 65, 81, 0.8);
+}
+
+.checkboxInput:checked + .checkmark {
+  background-color: #3B82F6;
+  border-color: #3B82F6;
+}
+
+.checkboxInput:checked + .checkmark::after {
+  content: '✓';
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Clear Filters Button */
+.clearFiltersBtn {
+  background: linear-gradient(135deg, #EF4444, #DC2626);
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+.clearFiltersBtn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #DC2626, #B91C1C);
+  transform: translateY(-1px);
+}
+
+.clearFiltersBtn:disabled {
+  background: #6B7280;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Status Messages */
+.statusMessage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(31, 41, 55, 0.95);
+  color: #E5E7EB;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  border: 1px solid #4B5563;
+  z-index: 100;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.statusMessage.error {
+  background: rgba(239, 68, 68, 0.1);
+  color: #EF4444;
+  border-color: #EF4444;
+}
+
+.retryBtn {
+  background: linear-gradient(135deg, #3B82F6, #2563EB);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.retryBtn:hover {
+  background: linear-gradient(135deg, #2563EB, #1D4ED8);
+  transform: translateY(-1px);
+}
+
+/* Map container styles */
+.mapCard :global(.leaflet-container) {
+  height: 100% !important;
+  width: 100% !important;
+  border-radius: 0;
+}
+
+/* Custom scrollbar */
+.searchContent::-webkit-scrollbar,
+.checkboxGroup.scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.searchContent::-webkit-scrollbar-track,
+.checkboxGroup.scrollable::-webkit-scrollbar-track {
+  background: rgba(55, 65, 81, 0.5);
+  border-radius: 3px;
+}
+
+.searchContent::-webkit-scrollbar-thumb,
+.checkboxGroup.scrollable::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #3B82F6, #10B981);
+  border-radius: 3px;
+}
+
+.searchContent::-webkit-scrollbar-thumb:hover,
+.checkboxGroup.scrollable::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #2563EB, #059669);
+}
+
+/* Animation for search box appearance */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Mobile bottom-sheet animation - slides up from the bottom */
+@keyframes sheetUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.searchBox {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .pageContent {
+    margin-left: 0;
+    height: 100vh;
+  }
+  
+  .mobileTopBar {
+    display: flex;
+  }
+  
+  .mapCard h3 {
+    display: none;
+  }
+  
+  .mapContainer {
+    top: 56px;
+  }
+  
+  .searchBox {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    transform: none;
+    width: 100%;
+    max-width: none;
+    max-height: 60vh;
+    border-radius: 16px 16px 0 0;
+    z-index: 1001;
+    padding-bottom: env(safe-area-inset-bottom);
+    animation: sheetUp 0.3s ease-out;
+  }
+  
+  .searchBox::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 4px;
+    background: #6B7280;
+    border-radius: 2px;
+    z-index: 2;
+  }
+  
+  .searchHeader {
+    padding-top: 22px;
+  }
+  
+  .searchHeader::before {
+    border-radius: 16px 16px 0 0;
+  }
+  
+  .toggleFiltersBtn {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+  
+  .searchInput {
+    padding: 14px 16px 14px 42px;
+    background: rgba(55, 65, 81, 0.8) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%239CA3AF' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E") no-repeat 14px center;
+    background-size: 16px;
+  }
+  
+  .resultsCount {
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .searchBox {
+    max-height: 70vh;
+  }
+  
+  .searchContent {
+    padding: 15px;
+  }
+  
+  .checkboxGroup {
+    max-height: 100px;
+  }
+}
+
+/* Landscape phones - short viewport */
+@media (max-height: 500px) and (orientation: landscape) {
+  .mobileTopBar {
+    height: 48px;
+    padding: 0 10px;
+  }
+
+  .mapContainer {
+    top: 48px;
+  }
+
+  .searchBox {
+    max-height: 85vh;
+  }
+}
+
+/* Ensure no horizontal scroll on the entire page */
+html, body {
+  overflow-x: hidden;
+}

@@ -1,0 +1,155 @@
+/* HazardsMap.module.css */
+.hazardPopup {
+  min-width: 250px;
+  max-width: 300px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.popupHeader {
+  margin: 0 0 12px 0;
+  padding: 0;
+  color: #1f2937;
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 8px;
+}
+
+.popupImage {
+  margin-bottom: 12px;
+}
+
+.popupImage img {
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.popupDetails {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.popupDetails p {
+  margin: 8px 0;
+  color: #4b5563;
+}
+
+.popupDetails strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.statusBadge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 8px;
+  text-transform: capitalize;
+}
+
+.statusReported {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.statusInProgress {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.statusResolved {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.statusNotStarted {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+/* Leaflet popup customization - these are global since Leaflet adds its own classes */
+:global(.leaflet-popup-content-wrapper) {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+:global(.leaflet-popup-tip) {
+  box-shadow: none;
+}
+
+:global(.custom-marker) {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .hazardPopup {
+    min-width: 200px;
+    max-width: 280px;
+  }
+  
+  .popupHeader {
+    font-size: 14px;
+  }
+  
+  .popupDetails {
+    font-size: 13px;
+  }
+}
+
+/* Image loading states */
+.popupImage {
+  position: relative;
+  min-height: 50px;
+}
+
+.popupImage::before {
+  content: 'Loading...';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #6b7280;
+  font-size: 12px;
+  display: none;
+}
+
+.popupImage.loading::before {
+  display: block;
+}
+
+.legend {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  color: #111827;
+  width: 170px;
+}
+
+.legend h4 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  text-align: center;
+  color: #111827;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.legendItem img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}

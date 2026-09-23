@@ -1,0 +1,236 @@
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #1F2937;
+  color: #E5E7EB;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  overflow-y: auto;
+  border-right: 2px solid #374151;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar nav {
+  flex: 1;
+}
+
+/* Header Styles */
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.1);
+}
+
+.sidebarLogo {
+  width: 45px;
+  height: 45px;
+  margin-right: 12px;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarTitle {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #E5E7EB;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.userBadge {
+  background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-top: 4px;
+  align-self: flex-start;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 -20px;
+}
+
+.sidebar li {
+  margin-bottom: 8px;
+  border-radius: 0;
+  transition: all 0.2s ease;
+}
+
+.sidebar li.active {
+  background-color: #3B82F6;
+}
+
+.sidebar li.active .sidebarLink {
+  color: white;
+  font-weight: bold;
+}
+
+.sidebar li:hover {
+  background-color: #3B82F6;
+}
+
+.sidebar li:hover .sidebarLink {
+  color: white;
+}
+
+/* Link Styles */
+.sidebarLink {
+  display: block;
+  padding: 14px 35px;
+  color: #E5E7EB;
+  text-decoration: none;
+  border-radius: 0;
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+/* Active link styling */
+.sidebar li.active .sidebarLink {
+  background-color: #3B82F6;
+  color: white;
+  font-weight: bold;
+}
+
+/* Hover link styling */
+.sidebarLink:hover {
+  background-color: #3B82F6;
+  color: white;
+}
+
+/* Logout specific styles */
+.logoutContainer {
+  margin: 0 -20px;
+  border-top: 1px solid rgba(229, 231, 235, 0.1);
+  padding-top: 10px;
+}
+
+.logoutBtn {
+  color: #E5E7EB;
+}
+
+.logoutBtn:hover {
+  color: white;
+}
+
+/* Optional: Add icons support for future enhancement */
+.navIcon {
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+}
+
+/* ====== Burger Toggle (mobile only) ====== */
+.burger {
+  display: none;
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 1101;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1F2937 0%, #374151 100%);
+  color: #E5E7EB;
+  border: 1px solid #4B5563;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s ease;
+}
+
+.burger:hover {
+  background: #3B82F6;
+}
+
+.burger:focus {
+  outline: none;
+}
+
+.burgerIcon {
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Backdrop overlay when drawer is open */
+.backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1090;
+}
+
+/* Responsive Design - Off-canvas drawer on mobile */
+@media (max-width: 768px) {
+  .burger {
+    display: flex;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    z-index: 1100;
+    transform: translateX(-105%);
+    transition: transform 0.3s ease;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .sidebar.sidebarOpen {
+    transform: translateX(0);
+  }
+
+  /* When a top bar exists, slide the drawer below it so the bar doesn't cover the header */
+  .sidebar.sidebarBelowBar {
+    top: 56px;
+    height: calc(100vh - 56px);
+  }
+
+  .sidebar.sidebarBelowBar.sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .backdrop {
+    display: block;
+  }
+}
+
+/* Landscape phones - short viewport */
+@media (max-height: 500px) and (orientation: landscape) {
+  .sidebar.sidebarBelowBar {
+    top: 48px;
+    height: calc(100vh - 48px);
+  }
+}

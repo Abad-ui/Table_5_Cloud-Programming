@@ -1,0 +1,232 @@
+.topbar {
+  height: 64px; /* Fixed height for topbar */
+  width: calc(100% - 220px); /* Match sidebar width */
+  background-color: white;
+  color: #1F2937;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 220px; /* Match sidebar width */
+  z-index: 900;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.topbar h1 {
+  margin-left: 10px;
+  font-size: 20px;
+}
+
+/* Logo next to title */
+.topbar-logo {
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
+}
+
+/* Right side of topbar */
+.topbar-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Notification container */
+.notification-container {
+  position: relative;
+}
+
+/* Notification button */
+.notification-btn {
+  background: none;
+  border: none;
+  color: #1F2937;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Notification badge */
+.notification-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: #EF4444;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #1F2937;
+}
+
+/* Notification dropdown */
+.notification-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 350px;
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  margin-top: 8px;
+  z-index: 1001;
+}
+
+/* Notification header */
+.notification-header {
+  padding: 16px;
+  border-bottom: 1px solid #E5E7EB;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notification-header h3 {
+  margin: 0;
+  color: #1F2937;
+  font-size: 1.1rem;
+}
+
+.notification-count {
+  color: #6B7280;
+  font-size: 0.8rem;
+}
+
+/* Notification list */
+.notification-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid #F3F4F6;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.notification-item:hover {
+  background-color: #F9FAFB;
+}
+
+.notification-item.unread {
+  background-color: #EFF6FF;
+  border-left: 3px solid #3B82F6;
+}
+
+.notification-item.read {
+  opacity: 0.7;
+}
+
+.notification-message {
+  color: #1F2937;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.notification-time {
+  color: #6B7280;
+  font-size: 0.8rem;
+}
+
+/* No notifications */
+.no-notifications {
+  padding: 20px;
+  text-align: center;
+  color: #6B7280;
+  font-size: 0.9rem;
+}
+
+/* Notification footer */
+.notification-footer {
+  padding: 12px 16px;
+  border-top: 1px solid #E5E7EB;
+  text-align: center;
+}
+
+.view-all-btn {
+  background: none;
+  border: none;
+  color: #3B82F6;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.view-all-btn:hover {
+  background-color: #EFF6FF;
+}
+
+/* Scrollbar styling */
+.notification-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notification-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.notification-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.notification-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .topbar {
+    left: 0;
+    width: 100%;
+    padding-left: 70px;
+  }
+
+  .notification-dropdown {
+    width: 300px;
+    right: -50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notification-dropdown {
+    width: min(280px, calc(100vw - 20px));
+    right: 0;
+  }
+  
+  .topbar {
+    padding: 0 15px;
+  }
+  
+  .topbar h1 {
+    font-size: 18px;
+  }
+}
