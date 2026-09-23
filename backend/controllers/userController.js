@@ -47,11 +47,39 @@ const sendResponse = (res, statusCode, success, message, key = null, data = null
 };
 
 // ================================
+// Helper: Fields to exclude from responses
+// (prevents password hashes / OTP data leaking into the Network tab)
+// ================================
+const SENSITIVE_FIELDS = '-password -verificationCode -otpExpires';
+
+// ================================
+// Get Current User (for token validation)
+// ================================
+const getCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select(SENSITIVE_FIELDS);
+    if (!user) return sendResponse(res, 404, false, 'User not found.');
+
+    return sendResponse(res, 200, true, 'User retrieved successfully.', 'user', {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      isVerified: user.isVerified,
+      authProvider: user.authProvider,
+      createdAt: user.createdAt,
+    });
+  } catch (err) {
+    return sendResponse(res, 500, false, 'Failed to fetch user.', 'error', err.message);
+  }
+};
+
+// ================================
 // Get All Users
 // ================================
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().sort({ createdAt: -1 });
+    const users = await User.find().select(SENSITIVE_FIELDS).sort({ createdAt: -1 });
     return sendResponse(res, 200, true, 'Users retrieved successfully.', 'users', users);
   } catch (err) {
     return sendResponse(res, 500, false, 'Failed to fetch users.', 'error', err.message);
@@ -68,7 +96,7 @@ const getUserById = async (req, res) => {
     return sendResponse(res, 400, false, 'Invalid user ID.');
 
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id).select(SENSITIVE_FIELDS);
     if (!user) return sendResponse(res, 404, false, 'User not found.');
 
     return sendResponse(res, 200, true, 'User retrieved successfully.', 'user', user);
@@ -326,7 +354,7 @@ const updateUser = async (req, res) => {
     return sendResponse(res, 400, false, 'At least one field (username, email, password, or role) must be provided.');
 
   try {
-    const user = await User.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+    const user = await User.findByIdAndUpdate(id, updateData, { new: true, runValidators: true }).select(SENSITIVE_FIELDS);
     if (!user) return sendResponse(res, 404, false, 'User not found.');
 
     return sendResponse(res, 200, true, 'User updated successfully.', 'user', user);
@@ -463,6 +491,7 @@ const resendPasswordResetOTP = async (req, res) => {
 module.exports = {
   getAllUsers,
   getUserById,
+  getCurrentUser,
   registerUser,
   loginUser,
   verifyAccount,

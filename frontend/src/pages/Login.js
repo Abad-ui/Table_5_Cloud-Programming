@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import logo from "../assets/images/logo.png";
 import { useUsers } from "../hooks/useUsers";
+import { getToken, decodeToken, isTokenValid, clearAuth } from "../utils/auth";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -11,6 +12,20 @@ function Login() {
   const navigate = useNavigate();
 
   const { login, loading, error, clearError } = useUsers();
+
+  // If a valid token is already stored, skip the login form (handles back/refresh)
+  useEffect(() => {
+    if (!getToken()) return;
+
+    if (!isTokenValid()) {
+      clearAuth();
+      return;
+    }
+
+    const payload = decodeToken(getToken());
+    const role = payload?.role;
+    navigate(role === "admin" ? "/admin-dashboard" : "/home", { replace: true });
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

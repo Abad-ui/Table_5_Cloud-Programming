@@ -78,6 +78,34 @@ export const logoutUser = () => {
 };
 
 // ================================
+// Get Current User (validate token)
+// ================================
+export const getCurrentUser = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      localStorage.removeItem("user");
+      return { success: false, message: "No token found" };
+    }
+
+    const response = await axios.get(`${API_URL}/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    // Invalid/expired token - clear stored session
+    if (error.response?.status === 401 || !error.response) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    }
+    return {
+      success: false,
+      message: error.response?.data?.message || "Not authenticated",
+    };
+  }
+};
+
+// ================================
 // Get All Users (Admin)
 // ================================
 export const getAllUsers = async () => {

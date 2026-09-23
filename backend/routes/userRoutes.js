@@ -18,6 +18,7 @@ const {
 const {
   getAllUsers,
   getUserById,
+  getCurrentUser,
   registerUser,
   loginUser,
   verifyAccount,
@@ -66,6 +67,9 @@ router.post('/resend-reset-otp', emailLimiter, emailValidation, resendPasswordRe
 
 // GET all users (Admin only)
 router.get('/', requireAuth, requireAdmin, getAllUsers);
+
+// GET current authenticated user (token validation)
+router.get('/me', requireAuth, getCurrentUser);
 
 // GET a single user
 router.get('/:id', requireAuth, getUserById);

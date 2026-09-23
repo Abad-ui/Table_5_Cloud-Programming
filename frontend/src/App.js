@@ -16,6 +16,7 @@ import AdminManageUsers from "./pages/admin/AdminManageUsers";
 import AdminViewHazards from "./pages/admin/AdminViewHazards";
 import AdminAnalysis from "./pages/admin/AdminAnalysis";
 import Toast from "./components/Toast/Toast";
+import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import "./index.css";
 
 function App() {
@@ -32,17 +33,17 @@ function App() {
         
         
         {/* User Routes */}
-        <Route path="/home" element={<Home />} />
-        <Route path="/report-hazard" element={<ReportHazard />} />
-        <Route path="/view-hazards" element={<ViewHazard />} />
-        <Route path="/my-reports" element={<MyReports />} />
+        <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/report-hazard" element={<ProtectedRoute><ReportHazard /></ProtectedRoute>} />
+        <Route path="/view-hazards" element={<ProtectedRoute><ViewHazard /></ProtectedRoute>} />
+        <Route path="/my-reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>} />
         
         {/* Admin Routes */}
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        <Route path="/admin-manage-reports" element={<AdminManageReports />} />
-        <Route path="/admin-manage-users" element={<AdminManageUsers />} />
-        <Route path="/admin-view-hazards" element={<AdminViewHazards />} />
-        <Route path="/admin-analysis" element={<AdminAnalysis />} />
+        <Route path="/admin-dashboard" element={<ProtectedRoute requireAdmin><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/admin-manage-reports" element={<ProtectedRoute requireAdmin><AdminManageReports /></ProtectedRoute>} />
+        <Route path="/admin-manage-users" element={<ProtectedRoute requireAdmin><AdminManageUsers /></ProtectedRoute>} />
+        <Route path="/admin-view-hazards" element={<ProtectedRoute requireAdmin><AdminViewHazards /></ProtectedRoute>} />
+        <Route path="/admin-analysis" element={<ProtectedRoute requireAdmin><AdminAnalysis /></ProtectedRoute>} />
       </Routes>
     </Router>
   );
